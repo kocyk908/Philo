@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lkoc <lkoc@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/03 17:25:26 by lkoc              #+#    #+#             */
-/*   Updated: 2024/10/03 17:25:26 by lkoc             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "philo.h"
 
 void	initialize_table(t_table *table, int argc, char **argv)
@@ -85,3 +73,6 @@ int	main(int argc, char **argv)
 	cleanup(&table);
 	return (0);
 }
+
+
+// write lock potrzebny żeby nie było dodatkowych milisekund na liczniku
