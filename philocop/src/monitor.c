@@ -32,7 +32,7 @@ void	*monitor(void *arg)
 				return (NULL);
 			}
 		}
-		usleep(1000); // Check every millisecond
+		usleep(100); // Check every millisecond
 	}
 	return (NULL);
 }

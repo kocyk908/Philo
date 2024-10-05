@@ -55,6 +55,6 @@ int	initialize_philosophers(t_table *table);
 void	create_threads(t_table *table, pthread_t *monitor_thread);
 void	join_threads(t_table *table, pthread_t *monitor_thread);
 void	cleanup(t_table *table);
-void	precise_sleep(long time);
+void	precise_sleep(long time, t_table *table);
 
 #endif
