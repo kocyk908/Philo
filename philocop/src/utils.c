@@ -20,6 +20,38 @@ long	get_timestamp(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
+long long get_timestampmicro(void)
+{
+    struct timeval time;
+    gettimeofday(&time, NULL);
+    return (time.tv_sec * 1000000 + time.tv_usec); // Zwraca czas w mikrosekundach
+}
+
+void	precise_usleep(long time, t_table *table)
+{
+	long	start;
+	long	elapse;
+	long	remaning;
+
+	start = get_timestampmicro();
+	while (get_timestampmicro() - start < time)
+	{
+		if (!table->simulation_running)
+			break ;
+		elapse = get_timestampmicro() - start;
+		remaning = time - elapse;
+		if (remaning > 1000)
+		{
+			usleep(time / 2);
+		}
+		else
+		{
+			while (get_timestampmicro() - start < time)
+				;
+		}
+	}
+}
+
 void	print_state(t_table *table, int id, const char *state)
 {
 	long	elapsed_time;

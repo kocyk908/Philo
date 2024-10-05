@@ -29,7 +29,8 @@ void	philo_eat(t_philosopher *philo)
 	print_state(table, philo->id, "has taken a fork");
 	if (table->num_philosophers == 1)
 	{
-		usleep(table->time_to_die * 1000);
+		precise_usleep(table->time_to_die * 1000, table);
+		//usleep(table->time_to_die * 100);
 		print_state(table, philo->id, "died");
 		table->simulation_running = 0;
 		pthread_mutex_unlock(&table->forks[philo->id - 1]);
@@ -39,7 +40,8 @@ void	philo_eat(t_philosopher *philo)
 	print_state(table, philo->id, "has taken a fork");
 	print_state(table, philo->id, "is eating");
 	philo->last_meal_time = get_timestamp();
-	usleep(table->time_to_eat * 1000);
+	precise_usleep(table->time_to_eat * 1000, table);
+	//usleep(table->time_to_eat * 1000);
 	philo->meals++;
 	pthread_mutex_unlock(&table->forks[philo->id - 1]);
 	pthread_mutex_unlock(&table->forks[philo->id % table->num_philosophers]);
@@ -51,7 +53,8 @@ void	philo_sleep(t_philosopher *philo)
 
 	table = philo->table;
 	print_state(table, philo->id, "is sleeping");
-	usleep(table->time_to_sleep * 1000);
+	precise_usleep(table->time_to_sleep * 1000, table);
+	//usleep(table->time_to_sleep * 1000);
 }
 
 void	*philo_lifecycle(void *arg)
@@ -61,6 +64,9 @@ void	*philo_lifecycle(void *arg)
 
 	philo = (t_philosopher *)arg;
 	table = philo->table;
+
+	if (philo->id % 2 == 0)
+		usleep(1);
 	while (table->simulation_running)
 	{
 		philo_think(philo);
