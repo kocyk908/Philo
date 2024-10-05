@@ -67,11 +67,11 @@ void	*philo_lifecycle(void *arg)
 	while (table->simulation_running)
 	{
 		philo_think(philo);
-		// if (!table->simulation_running)
-		// 	break ;
+		if (!table->simulation_running)
+			break ;
 		philo_eat(philo);
-		// if (!table->simulation_running)
-		// 	break ;
+		if (!table->simulation_running)
+			break ;
 		if (table->meals_required > 0 && philo->meals >= table->meals_required)
 		{
 			pthread_mutex_lock(&table->print_lock);
