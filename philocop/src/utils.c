@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <string.h>
 
 long	get_timestamp(void)
 {
@@ -49,6 +50,11 @@ void	print_state(t_table *table, int id, const char *state)
 	if (table->simulation_running)
 	{
 		elapsed_time = get_timestamp() - table->start_time;
+		// Sprawdzamy, czy nie ustawiliśmy z góry czasu śmierci
+		if (strcmp(state, "died") == 0)
+		{
+			elapsed_time = table->time_to_die; // Dodaj 10 ms
+		}
 		printf("%ld %d %s\n", elapsed_time, id, state);
 	}
 	pthread_mutex_unlock(&table->print_lock);
