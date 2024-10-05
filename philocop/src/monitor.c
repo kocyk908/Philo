@@ -17,26 +17,27 @@ void	*monitor(void *arg)
 	t_table			*table;
 	t_philosopher	*philo;
 	int				i;
-	long			elapsed_time;
+	long long		current_time;
+	long long		time_since_last_meal;
 
 	table = (t_table *)arg;
 	while (table->simulation_running)
 	{
 		i = -1;
+		current_time = get_timestamp(); // Pobieramy aktualny czas jako long long
 		while (++i < table->num_philosophers)
 		{
 			philo = &table->philosophers[i];
-			elapsed_time = get_timestamp() - philo->last_meal_time;
-			if (elapsed_time > table->time_to_die)
+			time_since_last_meal = current_time - philo->last_meal_time;
+			if (time_since_last_meal >= table->time_to_die)
 			{
-				// Jeśli filozof umarł, dodaj 10 ms do poprzedniego czasu
-				long death_time = philo->last_meal_time + table->time_to_die + 10;
 				print_state(table, philo->id, "died");
 				table->simulation_running = 0;
 				return (NULL);
 			}
 		}
-		usleep(100); // Regularne sprawdzanie co 100 µs
+		usleep(500); // Regularne sprawdzanie co 500 µs
 	}
 	return (NULL);
 }
+

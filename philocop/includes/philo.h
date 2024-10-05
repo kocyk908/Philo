@@ -43,7 +43,7 @@ typedef struct s_table {
     int philosophers_finished;
 } t_table;
 
-long    get_timestamp(void);
+long long    get_timestamp(void);
 void    print_state(t_table *table, int id, const char *state);
 void    *philo_lifecycle(void *arg);
 void    *monitor(void *arg);
@@ -55,6 +55,6 @@ int	initialize_philosophers(t_table *table);
 void	create_threads(t_table *table, pthread_t *monitor_thread);
 void	join_threads(t_table *table, pthread_t *monitor_thread);
 void	cleanup(t_table *table);
-void	precise_sleep(long time, t_table *table);
+void	precise_sleep(long long time, t_table *table);
 
 #endif

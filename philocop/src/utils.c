@@ -13,30 +13,32 @@
 #include "philo.h"
 #include <string.h>
 
-long	get_timestamp(void)
+long long get_timestamp(void)
 {
-	struct timeval	time;
+    struct timeval time;
 
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+    gettimeofday(&time, NULL);
+    return ((long long)(time.tv_sec * 1000) + (time.tv_usec / 1000)); // Zwracamy czas w milisekundach jako long long
 }
 
 // Zwraca czas w milisekundach
 
-void	precise_sleep(long duration_in_ms, t_table *table)
+void precise_sleep(long long duration_in_ms, t_table *table)
 {
-    long start_time;
-    long current_time;
+    long long start_time;
+    long long current_time;
 
     start_time = get_timestamp(); // Pobieramy aktualny czas
-    usleep((duration_in_ms - 1) * 1000); // Usypiamy prawie cały czas
-    while (table->simulation_running)
+    current_time = start_time;
+
+    // Używamy bardziej precyzyjnego sprawdzania czasu
+    while ((current_time - start_time < duration_in_ms) && table->simulation_running)
     {
-        current_time = get_timestamp();
-        if (current_time - start_time >= duration_in_ms) // Czekamy, aż minie dokładnie duration_in_ms
-            break;
+        usleep(100); // Krótkie przerwy, aby nie przeciążać CPU
+        current_time = get_timestamp(); // Aktualizujemy bieżący czas
     }
 }
+
 
 // Pobieramy aktualny czas
 // Usypiamy prawie cały czas (o 1 milisekundę mniej)

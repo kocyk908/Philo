@@ -23,27 +23,47 @@ void	philo_think(t_philosopher *philo)
 void	philo_eat(t_philosopher *philo)
 {
 	t_table	*table;
+	int		left_fork;
+	int		right_fork;
 
 	table = philo->table;
-	pthread_mutex_lock(&table->forks[philo->id - 1]);
-	print_state(table, philo->id, "has taken a fork");
+	left_fork = philo->id - 1;
+	right_fork = philo->id % table->num_philosophers;
+
+	// Zabezpieczenie na wypadek jednego filozofa
 	if (table->num_philosophers == 1)
 	{
-		precise_sleep(table->time_to_die, table); // Użycie precise_sleep
+		print_state(table, philo->id, "has taken a fork");
+		precise_sleep(table->time_to_die, table);
 		print_state(table, philo->id, "died");
 		table->simulation_running = 0;
-		pthread_mutex_unlock(&table->forks[philo->id - 1]);
 		return ;
 	}
-	pthread_mutex_lock(&table->forks[philo->id % table->num_philosophers]);
-	print_state(table, philo->id, "has taken a fork");
+
+	// Równoczesne blokowanie mutexów w kontrolowany sposób
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(&table->forks[left_fork]);
+		print_state(table, philo->id, "has taken a fork");
+		pthread_mutex_lock(&table->forks[right_fork]);
+	}
+	else
+	{
+		pthread_mutex_lock(&table->forks[right_fork]);
+		print_state(table, philo->id, "has taken a fork");
+		pthread_mutex_lock(&table->forks[left_fork]);
+	}
+
 	print_state(table, philo->id, "is eating");
-	philo->last_meal_time = get_timestamp(); // Ustawienie czasu ostatniego posiłku
-	precise_sleep(table->time_to_eat, table); // Użycie precise_sleep zamiast usleep()
+	philo->last_meal_time = get_timestamp(); // Aktualizacja czasu ostatniego posiłku
+	precise_sleep(table->time_to_eat, table);
+
+	pthread_mutex_unlock(&table->forks[left_fork]);
+	pthread_mutex_unlock(&table->forks[right_fork]);
+
 	philo->meals++;
-	pthread_mutex_unlock(&table->forks[philo->id - 1]);
-	pthread_mutex_unlock(&table->forks[philo->id % table->num_philosophers]);
 }
+
 
 void	philo_sleep(t_philosopher *philo)
 {
