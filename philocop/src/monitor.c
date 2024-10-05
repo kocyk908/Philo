@@ -32,7 +32,7 @@ void	*monitor(void *arg)
 				return (NULL);
 			}
 		}
-		precise_usleep(1000, table); // Check every millisecond
+		usleep(1000); // Check every millisecond
 	}
 	return (NULL);
 }

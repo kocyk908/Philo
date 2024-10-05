@@ -39,8 +39,8 @@ typedef struct s_table {
     pthread_mutex_t *forks;
     pthread_mutex_t print_lock;
     int simulation_running;
-    long start_time; // Add start_time to the Table structure
-    int philosophers_finished; // Add philosophers_finished to the Table structure
+    long long start_time; // Zmieniono na long long
+    int philosophers_finished;
 } t_table;
 
 long    get_timestamp(void);
@@ -55,6 +55,6 @@ int	initialize_philosophers(t_table *table);
 void	create_threads(t_table *table, pthread_t *monitor_thread);
 void	join_threads(t_table *table, pthread_t *monitor_thread);
 void	cleanup(t_table *table);
-void	precise_usleep(long time, t_table *table);
+void	precise_sleep(long time);
 
 #endif

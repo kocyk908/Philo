@@ -12,59 +12,41 @@
 
 #include "philo.h"
 
-long	get_timestamp(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-long long get_timestampmicro(void)
+long get_timestamp(void)
 {
     struct timeval time;
     gettimeofday(&time, NULL);
-    return (time.tv_sec * 1000000 + time.tv_usec); // Zwraca czas w mikrosekundach
+    return (time.tv_sec * 1000) + (time.tv_usec / 1000); // Zwraca czas w milisekundach
 }
 
-void	precise_usleep(long time, t_table *table)
+void precise_sleep(long duration_in_ms)
 {
-	long	start;
-	long	elapse;
-	long	remaning;
+    long start_time;
+    long current_time;
 
-	start = get_timestampmicro();
-	while (get_timestampmicro() - start < time)
-	{
-		if (!table->simulation_running)
-			break ;
-		elapse = get_timestampmicro() - start;
-		remaning = time - elapse;
-		if (remaning > 1000)
-		{
-			usleep(time / 2);
-		}
-		else
-		{
-			while (get_timestampmicro() - start < time)
-				;
-		}
-	}
+    start_time = get_timestamp(); // Pobieramy aktualny czas
+    usleep((duration_in_ms - 1) * 1000); // Usypiamy prawie cały czas
+    while (1)
+    {
+        current_time = get_timestamp();
+        if (current_time - start_time >= duration_in_ms) // Czekamy, aż minie dokładnie duration_in_ms
+            break;
+    }
 }
 
 void	print_state(t_table *table, int id, const char *state)
 {
 	long	elapsed_time;
 
-	elapsed_time = 0;
 	pthread_mutex_lock(&table->print_lock);
 	if (table->simulation_running)
 	{
-		elapsed_time = get_timestamp() - table->start_time;
-		printf("%ld %d %s\n", elapsed_time, id, state);
+		elapsed_time = get_timestamp() - table->start_time; // Obliczamy czas od początku symulacji w milisekundach
+		printf("%ld %d %s\n", elapsed_time, id, state); // Wypisujemy czas w milisekundach od 0
 	}
 	pthread_mutex_unlock(&table->print_lock);
 }
+
 
 int	is_positive_integer(const char *str)
 {

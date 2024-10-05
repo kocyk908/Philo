@@ -11,7 +11,7 @@ void	initialize_table(t_table *table, int argc, char **argv)
 	else
 		table->meals_required = -1;
 	table->simulation_running = 1;
-	table->start_time = get_timestamp();
+	table->start_time = get_timestamp(); // Zmiana na mikrosekundy
 	table->philosophers_finished = 0;
 }
 
@@ -73,6 +73,4 @@ int	main(int argc, char **argv)
 	cleanup(&table);
 	return (0);
 }
-
-
 // write lock potrzebny żeby nie było dodatkowych milisekund na liczniku
