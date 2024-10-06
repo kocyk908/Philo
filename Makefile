@@ -13,10 +13,12 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
 
 $(OBJDIR)/%.o: src/%.c
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm -f $(OBJS)
+	@rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
