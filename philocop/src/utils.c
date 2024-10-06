@@ -39,6 +39,20 @@ void precise_sleep(long long duration_in_ms, t_table *table)
     }
 }
 
+//void precise_sleep(long long duration_in_ms, t_table *table)
+//{
+//    long long start_time = get_timestamp();
+//    long long current_time;
+
+//    while (table->simulation_running)
+//    {
+//        current_time = get_timestamp();
+//        if (current_time - start_time >= duration_in_ms)
+//            break;
+//        usleep(100);  // Sleep in increments to avoid busy-waiting
+//    }
+//}
+
 
 // Pobieramy aktualny czas
 // Usypiamy prawie cały czas (o 1 milisekundę mniej)
