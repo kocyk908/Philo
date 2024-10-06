@@ -41,21 +41,35 @@ typedef struct s_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
 	int				simulation_running;
-	long long		start_time; // Zmieniono na long long
+	long long		start_time;
 	int				philosophers_finished;
 }					t_table;
 
-void		print_state(t_table *table, int id, const char *state);
-void		*philo_lifecycle(void *arg);
+// main
+
+void		initialize_table(t_table *table, int argc, char **argv);
+int			initialize_philosophers(t_table *table);
+void		cleanup(t_table *table);
+
+// monitor
+
 void		*monitor(void *arg);
+
+// routine
+
+void		*philo_lifecycle(void *arg);
+
+// threads
+
 void		create_threads(t_table *table, pthread_t *monitor_thread);
 void		join_threads(t_table *table, pthread_t *monitor_thread);
-void		cleanup(t_table *table);
+
+// utils
+
+void		print_state(t_table *table, int id, const char *state);
 void		precise_sleep(long long time, t_table *table);
-void		initialize_table(t_table *table, int argc, char **argv);
 int			is_positive_integer(const char *str);
 int			validate_arguments(int argc, char **argv);
-int			initialize_philosophers(t_table *table);
 long		ft_atol(const char *str);
 long long	get_timestamp(void);
 
