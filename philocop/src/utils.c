@@ -18,10 +18,9 @@ long long get_timestamp(void)
     struct timeval time;
 
     gettimeofday(&time, NULL);
-    return ((long long)(time.tv_sec * 1000) + (time.tv_usec / 1000)); // Zwracamy czas w milisekundach jako long long
+    return ((long long)(time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-// Zwraca czas w milisekundach
 
 void precise_sleep(long long duration_in_ms, t_table *table)
 {
@@ -29,13 +28,14 @@ void precise_sleep(long long duration_in_ms, t_table *table)
     long long current_time;
 
     start_time = get_timestamp(); // Pobieramy aktualny czas
-    current_time = start_time;
+	current_time = start_time;
+	usleep((duration_in_ms - 1) * 1000);
 
-    // Używamy bardziej precyzyjnego sprawdzania czasu
-    while ((current_time - start_time < duration_in_ms) && table->simulation_running)
+    while (table->simulation_running)
     {
-        usleep(100); // Krótkie przerwy, aby nie przeciążać CPU
         current_time = get_timestamp(); // Aktualizujemy bieżący czas
+		if (current_time - start_time >= duration_in_ms)
+			break;
     }
 }
 
@@ -52,11 +52,6 @@ void	print_state(t_table *table, int id, const char *state)
 	if (table->simulation_running)
 	{
 		elapsed_time = get_timestamp() - table->start_time;
-		// Sprawdzamy, czy nie ustawiliśmy z góry czasu śmierci
-		if (strcmp(state, "died") == 0)
-		{
-			elapsed_time = table->time_to_die; // Dodaj 10 ms
-		}
 		printf("%ld %d %s\n", elapsed_time, id, state);
 	}
 	pthread_mutex_unlock(&table->print_lock);

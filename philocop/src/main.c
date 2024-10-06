@@ -73,4 +73,3 @@ int	main(int argc, char **argv)
 	cleanup(&table);
 	return (0);
 }
-// write lock potrzebny żeby nie było dodatkowych milisekund na liczniku
