@@ -24,7 +24,7 @@ void	*monitor(void *arg)
 	while (table->simulation_running)
 	{
 		i = -1;
-		current_time = get_timestamp(); // Pobieramy aktualny czas jako long long
+		current_time = get_timestamp();
 		while (++i < table->num_philosophers)
 		{
 			philo = &table->philosophers[i];
@@ -36,8 +36,7 @@ void	*monitor(void *arg)
 				return (NULL);
 			}
 		}
-		usleep(500); // Regularne sprawdzanie co 500 µs
+		usleep(500);
 	}
 	return (NULL);
 }
-

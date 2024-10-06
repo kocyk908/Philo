@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkoc <lkoc@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/03 17:24:56 by lkoc              #+#    #+#             */
+/*   Updated: 2024/10/03 17:24:56 by lkoc             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	initialize_table(t_table *table, int argc, char **argv)
@@ -11,7 +23,7 @@ void	initialize_table(t_table *table, int argc, char **argv)
 	else
 		table->meals_required = -1;
 	table->simulation_running = 1;
-	table->start_time = get_timestamp(); // Zmiana na mikrosekundy
+	table->start_time = get_timestamp();
 	table->philosophers_finished = 0;
 }
 
